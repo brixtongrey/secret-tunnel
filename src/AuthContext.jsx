@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
 async function signup() {
   setError("");
   try {
-    const { token } = await signup()
+    const { token } = await signup() // entrance()
     setToken(token)
     localStorage.setItem("token", token);
   } catch (error) {
@@ -27,7 +27,7 @@ async function signup() {
     try {
       if (!token) {throw new Error("No token found!");
       }
-      await authenticateUser(token);
+      await authenticateUser(token); // tablet()
     } catch (error) {
       setError(error.message || "Authentication failed. Please try again.");
     }
