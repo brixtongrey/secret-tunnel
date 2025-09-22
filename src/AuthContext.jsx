@@ -9,6 +9,10 @@ export function AuthProvider({ children }) {
   const [location, setLocation] = useState("GATE");
 
   // TODO: signup
+function Signup() {
+  
+}
+
 
   // TODO: authenticate
 
