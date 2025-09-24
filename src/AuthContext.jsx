@@ -1,4 +1,4 @@
-import { createContext, use, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 const API = "https://fsa-jwt-practice.herokuapp.com";
 
@@ -9,14 +9,14 @@ export function AuthProvider({ children }) {
   const [location, setLocation] = useState("GATE");
 
   // TODO: signup
-const signup = async () => {
+const signup = async (credentials) => {
   try {
     const response = await fetch(`${API}/signup`, {
     method: "POST",
     headers: { 
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(),
+    body: JSON.stringify(credentials),
     });
     const result = await response.json();
     setToken(result.token);
