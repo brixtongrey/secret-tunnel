@@ -7,33 +7,41 @@ const AuthContext = createContext();
 export function AuthProvider({ children }) {
   const [token, setToken] = useState();
   const [location, setLocation] = useState("GATE");
-  const [error, setError] = useState("");
 
   // TODO: signup
-async function signup() {
-  setError("");
+const signup = async () => {
   try {
-    const { token } = await signup() // entrance()
-    setToken(token)
-    localStorage.setItem("token", token);
+    const response = await fetch(`${API}/signup`, {
+    method: "POST",
+    headers: { 
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(),
+    });
+    const result = await response.json();
+    setToken(result.token);
+    setLocation("TABLET");
   } catch (error) {
-    setError(error.message || "Sign up failed. Please try again.");
+    console.error("Error during sign up", error);
   }
 }
 
   // TODO: authenticate
-  async function authenticateUser() {
-    setError("");
-    try {
-      if (!token) {throw new Error("No token found!");
-      }
-      await authenticateUser(token); // tablet()
-    } catch (error) {
-      setError(error.message || "Authentication failed. Please try again.");
-    }
+const authenticate = async() => {
+  try {
+    if (!token) throw Error("No token found.");
+    const response = await fetch(`{API}/authenticate`, {
+      headers: {Authorization: `Bearer ${token}`},
+    });
+    if (!response.ok) throw Error(`Authentication failed: ${response.status}`);
+    setLocation("TUNNEL");
+  } 
+  catch (error) {
+    console.error("Error during authentication", error);
   }
+}
 
-  const value = { location };
+  const value = { signup, authenticate, location };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
